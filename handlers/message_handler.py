@@ -3,11 +3,21 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ParseMode
 
 from config import dp, bot
+from filters import Button
 from keyboards import spam_btn, ListOfButtons
 from myslq import rasilkas
 from utils import Admin
 
-
+@dp.message_handler(Button('Разместить объявление'))
+async def profil(message: types.Message,state: FSMContext):
+	data = await state.get_data()
+	adminP = data.get('adminP')
+	if adminP == 1:
+		keyboard = ListOfButtons(text=['Назад']).reply_keyboard
+		await message.answer('Вы начали создание объявления.\nПришлите текст объявления',reply_markup=keyboard)
+		await Admin.text.set()
+	else:
+		await message.answer('Не понимаю ваш запрос.')
 @dp.message_handler(lambda message: False if message.text.startswith('@fghvjbkn_bot ') else True)
 async def get_info(message: types.Message):
     keyboard = types.InlineKeyboardMarkup()
