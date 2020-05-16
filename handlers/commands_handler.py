@@ -3,8 +3,8 @@ from aiogram.dispatcher import FSMContext
 
 
 from config import dp, bot
-from keyboards import subscribe_kb
-from myslq import save_user
+from keyboards import subscribe_kb, unsubscribe_kb
+from myslq import save_user, smap_not_yes
 from utils import Admin
 
 
@@ -26,7 +26,13 @@ async def show_start_message(message: types.Message):
 
 @dp.message_handler(commands="settings")
 async def show_start_message(message: types.Message):
-    await message.answer("Настройки\n", reply_markup=subscribe_kb)
+
+    sms = smap_not_yes(message.chat.id)
+    if sms == '0':
+        keyboard = unsubscribe_kb
+    else:
+        keyboard = subscribe_kb
+    await message.answer("Настройки\n", reply_markup=keyboard)
 
 
 @dp.message_handler(commands=['admin'])
