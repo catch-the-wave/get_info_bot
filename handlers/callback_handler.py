@@ -2,7 +2,6 @@ from aiogram.dispatcher import FSMContext
 from config import dp, bot
 
 from keyboards import company_kb_1, company_kb_2, subscribe_kb, unsubscribe_kb
-# import
 
 dp.callback_query_handler
 
@@ -19,8 +18,9 @@ async def callback_inline(call, state: FSMContext):
             await bot.edit_message_reply_markup(inline_message_id=i_m_i, reply_markup=company_kb_1)
 
         elif call.data == 'download_report':
-            # await bot.send_document(call., 'BQACAgIAAxkBAAM7XrbJnnTK2x8EH_up-C_kZXNH1T4AAq8FAAJJhrhJY8REmuWXg1YZBA')
-            pass
+            f = open('7725352740.pdf', 'rb')
+            await bot.send_document(call.message.chat.id, f)
+
 
         elif call.data == 'unsubscribe':
             await bot.edit_message_reply_markup(inline_message_id=i_m_i, reply_markup=subscribe_kb)
